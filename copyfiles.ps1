@@ -74,23 +74,30 @@ $objForm.Add_Shown({$objForm.Activate()})
 $SrcDirName = $($objSrcDirTextBox.Text).trim('\') + '\'
 $DstDirName = $($objDstDirTextBox.Text).trim('\') + '\'
 
+# create the new sub-directory the files will go into
 [string]$folderDate = Get-Date -Format "MMddyyyy"
 [string]$newDirName = 'NewFolder_' + $folderDate + '\'
+New-Item -ItemType Directory -Force -Path $DstDirName$newDirName
 
-[string]$LogDirName = "${env:homepath}\Documents"
+# set up the log files
+[string]$LogDirName = "c:\logs\"
+New-Item -ItemType Directory -Force -Path $LogDirName
 [string]$logtime = Get-Date -Format "MMddyyyyHHmm"
 [string]$logfile = $LogDirName + 'copyfiles_' + $logtime + '.log'
 Out-File -FilePath $logfile
 
-New-Item -ItemType Directory -Force -Path $DstDirName$newDirName
-
 $fileNames = $($objFilesTextBox.Text).Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
 foreach ($fileName in $fileNames)
 {
-  [string]$fullFileName = $fileName.trim('.pdf') + '.pdf'
-  Write "Copying File: $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" -Verbose
-  Write "Copying File: $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" >> $logfile
-  Copy-Item -Path $SrcDirName$fullFileName -Destination $DstDirName$newDirName$fullFileName
+    [string]$fullFileName = $fileName.trim('.pdf') + '.pdf'
+    if (-not(Test-Path -Path $SrcDirName$fullFileName -PathType Leaf)) {
+        Write "File doesn't exist: $SrcDirName$fullFileName" -Verbose
+        Write "File doesn't exist: $SrcDirName$fullFileName" >> $logfile
+    } else {
+        Copy-Item -Path $SrcDirName$fullFileName -Destination $DstDirName$newDirName$fullFileName
+        Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" -Verbose
+        Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" >> $logfile
+    }
 }
 
 Read-Host -Prompt "Press Enter to exit"
