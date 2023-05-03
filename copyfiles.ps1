@@ -96,7 +96,7 @@ foreach ($fileName in $fileNames)
     } else {
         Copy-Item -Path $SrcDirName$fullFileName -Destination $DstDirName$newDirName$fullFileName
         Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" -Verbose
-        Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" >> $logfile
+        # Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" >> $logfile
     }
 }
 
