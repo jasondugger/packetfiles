@@ -83,8 +83,8 @@ New-Item -ItemType Directory -Force -Path $DstDirName$newDirName
 [string]$LogDirName = "c:\logs\"
 New-Item -ItemType Directory -Force -Path $LogDirName
 [string]$logtime = Get-Date -Format "MMddyyyyHHmm"
-[string]$logfile = $LogDirName + 'copyfiles_' + $logtime + '.log'
-Out-File -FilePath $logfile
+[string]$missingfiles_logfile = $LogDirName + 'missingfiles_' + $logtime + '.log'
+Out-File -FilePath $missingfiles_logfile
 
 $fileNames = $($objFilesTextBox.Text).Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
 foreach ($fileName in $fileNames)
@@ -92,11 +92,10 @@ foreach ($fileName in $fileNames)
     [string]$fullFileName = $fileName.trim('.pdf') + '.pdf'
     if (-not(Test-Path -Path $SrcDirName$fullFileName -PathType Leaf)) {
         Write "File doesn't exist: $SrcDirName$fullFileName" -Verbose
-        Write "File doesn't exist: $SrcDirName$fullFileName" >> $logfile
+        Write "File doesn't exist: $SrcDirName$fullFileName" >> $missingfiles_logfile
     } else {
         Copy-Item -Path $SrcDirName$fullFileName -Destination $DstDirName$newDirName$fullFileName
         Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" -Verbose
-        # Write "Copied $SrcDirName$fullFileName to $DstDirName$newDirName$fullFileName" >> $logfile
     }
 }
 
