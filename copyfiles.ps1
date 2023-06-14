@@ -73,6 +73,11 @@ $objForm.Add_Shown({$objForm.Activate()})
 
 $SrcDirName = $($objSrcDirTextBox.Text).trim('\') + '\'
 $DstDirName = $($objDstDirTextBox.Text).trim('\') + '\'
+$fileNames = $($objFilesTextBox.Text).Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
+
+if ($fileNames.count -lt 1) {
+    exit
+}
 
 # create the new sub-directory the files will go into
 [string]$folderDate = Get-Date -Format "MMddyyyy"
@@ -86,7 +91,6 @@ New-Item -ItemType Directory -Force -Path $LogDirName
 [string]$missingfiles_logfile = $LogDirName + 'missingfiles_' + $logtime + '.log'
 Out-File -FilePath $missingfiles_logfile
 
-$fileNames = $($objFilesTextBox.Text).Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
 foreach ($fileName in $fileNames)
 {
     [string]$fullFileName = $fileName.trim('.pdf') + '.pdf'
