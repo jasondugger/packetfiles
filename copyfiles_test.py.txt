@@ -1,0 +1,15 @@
+flist_in = []
+
+print("")
+print("Add the list of packet/file names you want to copy")
+print("Enter filenames either one at a time or a comma separated list")
+print("When done, press ENTER:\n")
+while True:
+    filen = input().split(',')
+    if filen[0] == "":
+        break
+    flist_in += filen
+
+print(flist_in)
+
+with open()
