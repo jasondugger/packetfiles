@@ -27,7 +27,7 @@ for item in myfiles.iterdir():
                 print(f"{old_name} already renamed")
             else:
                 os.rename(old_name, new_name)
-                print(f"old name: {old_name}, new name: {new_name}")
+                print(f"renamed old name: {old_name} to new name: {new_name}")
         time.sleep(.125)
 
 print("\nDone!...Bye!\n")
