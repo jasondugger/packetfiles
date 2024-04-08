@@ -23,7 +23,8 @@ from pathlib import Path
 home_dir = Path.home()
 spath = "C:\\Users\\Jason\\packets"
 dpath = "C:\\Users\\Jason\\movedfiles"
-log_path = str(home_dir)+"\\movefiles_error.log"
+change_log_path = str(home_dir)+"\\movefiles_success.csv"
+error_log_path = str(home_dir)+"\\movefiles_error.log"
 
 filenames = []
 
@@ -41,17 +42,24 @@ new_folder = str(time.strftime("%m%d%Y"))
 if not os.path.exists(dpath+'\\'+new_folder):
     os.makedirs(dpath+'\\'+new_folder)
 
-lf = open(log_path, 'a+')
+change_log = open(change_log_path, 'a+')
+error_log = open(error_log_path, 'a+')
 
 for filename in filenames:
     source_file = spath+'\\'+filename
     dst_file = dpath+'\\'+new_folder+'\\'+filename
     try:
         os.rename(source_file, dst_file)
+        change_log.write(f"{source_file}\n")
+        print(f"{source_file} moved")
     except FileNotFoundError:
-        lf.write(f"{source_file} didn't exist\n")
-        print(f"{source_file} didn't exist")
-    except OSError:
+        error_log.write(f"{source_file} doesn't exist\n")
+        print(f"{source_file} doesn't exist")
+    except OSError as e:
+        print(f"move failed: {e}")
         continue
 
-lf.close()
+error_log.close()
+change_log.close()
+
+print("\nDone!...Bye!\n")
