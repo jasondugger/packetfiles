@@ -12,17 +12,15 @@ import os
 import re
 from pathlib import Path
 
-# spath = input("Enter the directorywhere the files are: ")
-# if not spath:
-#     sys.exit("no source folder entered\n")
+spath = input("Enter the directorywhere the files are: ")
+if not spath:
+    sys.exit("no source folder entered\n")
 
-# dpath = input("Enter the directory where the files will go: ")
-# if not dpath:
-#     sys.exit("no target folder entered\n")
+dpath = input("Enter the directory where the files will go: ")
+if not dpath:
+    sys.exit("no target folder entered\n")
 
 home_dir = Path.home()
-spath = "C:\\Users\\Jason\\packets"
-dpath = "C:\\Users\\Jason\\movedfiles"
 change_log_path = str(home_dir)+"\\movefiles_success.csv"
 error_log_path = str(home_dir)+"\\movefiles_error.log"
 
@@ -62,4 +60,6 @@ for filename in filenames:
 error_log.close()
 change_log.close()
 
+print(f"\nerror log: {error_log_path}")
+print(f"you can look at it here with: 'cat {error_log_path}'")
 print("\nDone!...Bye!\n")
