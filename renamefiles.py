@@ -9,10 +9,8 @@ import re
 from pathlib import Path
 
 home_dir = Path.home()
-change_log_path = str(home_dir)+"\\rename_files_log.txt"
-error_log_path = str(home_dir)+"\\movefiles_error.txt"
+change_log_path = str(home_dir)+"\\Documents\\rename_files_log.txt"
 change_log = open(change_log_path, 'a+')
-error_log = open(error_log_path, 'a+')
 
 spath = input("Enter the directory with the files to be renamed: ")
 if not spath:
@@ -36,11 +34,14 @@ for item in myfiles.iterdir():
             new_name = match.group(1)+match.group(2)
             if old_name == new_name:
                 change_log.write(f"{old_name} already renamed")
+                print(f"{old_name} already renamed")
             else:
                 try:
-                    os.rename(old_name, new_name)
+                    os.rename(str(myfiles)+"\\"+old_name, str(myfiles)+"\\"+new_name)
+                    print(f"renamed {old_name} to {new_name}")
                     change_log.write(f"renamed {old_name} to {new_name}")
                 except Exception as e:
+                    print(f"failed to rename {old_name} to: {new_name}: {e}")
                     change_log.write(f"failed to rename {old_name} to: {new_name}: {e}")
 
         time.sleep(.125)
