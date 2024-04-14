@@ -12,17 +12,18 @@ import os
 import re
 from pathlib import Path
 
+home_dir = Path.home()
+change_log_path = str(home_dir)+"\\movefiles_log.csv"
+
 spath = input("Enter the directorywhere the files are: ")
 if not spath:
-    sys.exit("no source folder entered\n")
+    input(f"no source folder entered\nChanges logged in {change_log_path}\nPress Enter to exit")
+    sys.exit()
 
 dpath = input("Enter the directory where the files will go: ")
 if not dpath:
-    sys.exit("no target folder entered\n")
-
-home_dir = Path.home()
-change_log_path = str(home_dir)+"\\movefiles_success.csv"
-error_log_path = str(home_dir)+"\\movefiles_error.log"
+    input(f"no target folder entered\nChanges logged in {change_log_path}\nPress Enter to exit")
+    sys.exit()
 
 filenames = []
 
@@ -34,32 +35,32 @@ while True:
     filenames.append(f)
 
 if not filenames:
-    sys.exit("no files entered\n")
+    input(f"no files entered\nChanges logged in {change_log_path}\nPress Enter to exit")
+    sys.exit()
 
 new_folder = str(time.strftime("%m%d%Y"))
-if not os.path.exists(dpath+'\\'+new_folder):
-    os.makedirs(dpath+'\\'+new_folder)
+new_folder_path = dpath+'\\'+new_folder
+if not os.path.exists(new_folder_path):
+    os.makedirs(new_folder_path)
 
 change_log = open(change_log_path, 'a+')
-error_log = open(error_log_path, 'a+')
 
 for filename in filenames:
     source_file = spath+'\\'+filename
-    dst_file = dpath+'\\'+new_folder+'\\'+filename
+    dst_file = new_folder_path+'\\'+filename
     try:
         os.rename(source_file, dst_file)
-        change_log.write(f"{source_file}\n")
-        print(f"{source_file} moved")
+        change_log.write(f"{filename} moved\n")
+        print(f"{filename} moved")
     except FileNotFoundError:
-        error_log.write(f"{source_file} doesn't exist\n")
-        print(f"{source_file} doesn't exist")
+        change_log.write(f"{filename} doesn't exist\n")
+        print(f"{filename} doesn't exist")
     except OSError as e:
-        print(f"move failed: {e}")
+        change_log.write(f"failed to move {filename}: {e}\n")
+        print(f"failed to move {filename}: {e}")
         continue
 
-error_log.close()
 change_log.close()
 
-print(f"\nerror log: {error_log_path}")
-print(f"you can look at it here with: 'cat {error_log_path}'")
-print("\nDone!...Bye!\n")
+input(f"Done!\nChanges logged in {change_log_path}\nPress Enter to exit")
+sys.exit("\n")

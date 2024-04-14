@@ -46,5 +46,7 @@ for item in myfiles.iterdir():
 
         time.sleep(.125)
 
+change_log.close()
+
 input(f"Done!\nChanges logged in {change_log_path}\nPress Enter to exit")
 sys.exit("\n")
