@@ -13,9 +13,9 @@ import re
 from pathlib import Path
 
 home_dir = Path.home()
-change_log_path = str(home_dir)+"\\movefiles_log.csv"
+change_log_path = str(home_dir)+"\\Documents\\movefiles_log.txt"
 
-spath = input("Enter the directorywhere the files are: ")
+spath = input("Enter the directory where the files are: ")
 if not spath:
     input(f"no source folder entered\nChanges logged in {change_log_path}\nPress Enter to exit")
     sys.exit()
@@ -45,7 +45,8 @@ if not os.path.exists(new_folder_path):
 
 change_log = open(change_log_path, 'a+')
 
-for filename in filenames:
+for f in filenames:
+    filename = f+'.pdf'
     source_file = spath+'\\'+filename
     dst_file = new_folder_path+'\\'+filename
     try:
